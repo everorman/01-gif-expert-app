@@ -1,14 +1,23 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getGifs } from '../helpers/getGifts';
 export const GifGrid = ({ category }) => {
+  const [images, setImages] = useState([]);
+  const getImages = async () => {
+    const images = await getGifs(category);
+    setImages(images);
+  };
   useEffect(() => {
-    getGifs(category);
-  });
+    getImages();
+  }, []);
   return (
     <>
       <h3>{category}</h3>
-      <h2>Hola mundo</h2>
+      <ol>
+        {images.map(({ id, title }) => (
+          <li key={id}>{title}</li>
+        ))}
+      </ol>
     </>
   );
 };
